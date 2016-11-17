@@ -11,6 +11,8 @@ namespace php\rpcx\codec;
 
 use php\rpcx\Codec;
 use php\rpcx\utils\Uuid;
+use php\rpcx\utils\JsonEncoder;
+
 class JsonV1 extends Base  implements Codec
 {
     private $_id;
@@ -28,7 +30,8 @@ class JsonV1 extends Base  implements Codec
             'method' => $method,
         ];
         if ($args) {
-            $request['params'] = [$args];
+            //$request['params'] = [$args];
+            $request['params'] = JsonEncoder::encode($args);
         }
         $json = json_encode($request);
         if ($this->_debug) {
@@ -66,8 +69,5 @@ class JsonV1 extends Base  implements Codec
             }
         }
     }
-
-
-
 
 }

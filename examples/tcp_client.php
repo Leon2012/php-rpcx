@@ -15,8 +15,8 @@ $port = 8972;
 $method = 'Arith.Mul';
 $params = ['A' => 5, 'B' => 6];
 
-$method1 = 'Arith.Hello';
-$params1 = 'leon';
+$method1 = 'Arith.Add';
+$params1 = 5;
 
 $trans = new Socket($addr, $port);
 

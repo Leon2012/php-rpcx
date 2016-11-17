@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/smallnest/rpcx"
 	"github.com/smallnest/rpcx/codec"
+	"fmt"
 )
 
 type Args struct {
@@ -18,8 +19,8 @@ type Reply struct {
 //	Name string `msg:"name"`
 //}
 
-type HelloArgs string
-type HelloReply string
+type HelloArgs int
+type HelloReply int
 
 //type HelloReply struct {
 //	Hello string `msg:"hello"`
@@ -37,8 +38,18 @@ func (t *Arith) Error(args *Args, reply *Reply) error {
 }
 
 func (t *Arith) Hello(args *HelloArgs, reply *HelloReply) error  {
-	*reply = "hello: " + string(*args);
+	if v, ok := interface{}(*args).(int); ok {
+		a := 10 + v;
+		*reply  = HelloReply(a);
+	}
 	return nil;
+}
+
+func (t *Arith) Add(i int, r *int) error {
+	a :=  10 + i
+	*r = a
+	fmt.Printf("i: %v", i)
+	return nil
 }
 
 func main() {
