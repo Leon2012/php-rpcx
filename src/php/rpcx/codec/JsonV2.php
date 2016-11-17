@@ -10,17 +10,64 @@ namespace php\rpcx\codec;
 
 
 use php\rpcx\Codec;
+use php\rpcx\utils\Uuid;
 
-class JsonV2 implements Codec
+class JsonV2 extends Base implements Codec
 {
-    public function decode($value)
+    private $_id;
+
+    public function __construct()
     {
-        // TODO: Implement decode() method.
+        parent::__construct();
     }
 
-    public function encode($value)
+    public function encode($method, $args = null)
     {
-        // TODO: Implement encode() method.
+        $this->_id = Uuid::gen();
+        $request = [
+            'jsonrpc' => '2.0',
+            'id' => $this->_id,
+            'method' => $method,
+        ];
+        if ($args) {
+            $request['params'] = $args;
+        }
+        $json = json_encode($request);
+        if ($this->_debug) {
+            echo sprintf("request: %s \n", $json);
+        }
+        return $json;
     }
+
+    public function decode($rawContent)
+    {
+        if ($this->_debug) {
+            echo sprintf("response: %s \n", $rawContent);
+        }
+        $response = json_decode($rawContent, true);
+        if (isset($response['error']) && !empty($response['error'])) {
+            $this->_error = [
+                'code' => $response['error']['code'],
+                'message' => $response['error']['message'],
+            ];
+            return false;
+        }else{
+            $id = $response['id'];
+            if (empty($id) || $id != $this->_id) {
+                $this->_error = [
+                    'code' => '500',
+                    'message' => sprintf("id not equal %s , %s", $id, $this->_id),
+                ];
+                return false;
+            }
+
+            if (isset($response['result'])) {
+                return $response['result'];
+            }else{
+                return true;
+            }
+        }
+    }
+
 
 }

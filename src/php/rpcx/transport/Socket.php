@@ -11,6 +11,8 @@ namespace php\rpcx\transport;
 
 use php\rpcx\Transport;
 
+define('MAX_READ_LENGTH', 4096);
+
 class Socket implements Transport
 {
 
@@ -61,7 +63,7 @@ class Socket implements Transport
             return false;
         }
 
-        if (($this->_rawContent = socket_read($this->_socket)) === false) {
+        if (($this->_rawContent = socket_read($this->_socket, MAX_READ_LENGTH)) === false) {
             return false;
         }
 

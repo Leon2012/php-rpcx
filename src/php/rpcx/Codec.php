@@ -10,6 +10,7 @@
 namespace php\rpcx;
 interface Codec
 {
-    public function decode($value);
-    public function encode($value);
+    public function decode($rawContent);
+    public function encode($method, $args = null);
+    public function getLastError();
 }
