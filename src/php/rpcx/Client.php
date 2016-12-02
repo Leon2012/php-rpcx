@@ -8,9 +8,6 @@
  */
 namespace php\rpcx;
 
-use php\rpcx\codec\JsonV2;
-use php\rpcx\transport\Socket;
-
 class Client
 {
     private $_transport;
@@ -30,14 +27,17 @@ class Client
         $ret = $this->_transport->send($request);
         if (!$ret) {
             $this->_errors[] = $this->_transport->getLastError();
+
             return false;
-        }else{
+        } else {
             $rawContent = $this->_transport->read();
             $result = $this->_codec->decode($rawContent);
             if ($result === false) {
                 $this->_errors[] = $this->_codec->getLastError();
+
                 return false;
             }
+
             return $result;
         }
     }
@@ -83,6 +83,5 @@ class Client
     {
         $this->_codec = $codec;
     }
-
 
 }

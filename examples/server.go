@@ -54,8 +54,8 @@ func (t *Arith) Add(i int, r *int) error {
 
 func main() {
 	server := rpcx.NewServer()
-	//server.ServerCodecFunc = codec.NewJSONRPC2ServerCodec
-	server.ServerCodecFunc = codec.NewJSONRPCServerCodec;
+	server.ServerCodecFunc = codec.NewJSONRPC2ServerCodec
+	//server.ServerCodecFunc = codec.NewJSONRPCServerCodec;
 
 	server.RegisterName("Arith", new(Arith))
 	server.Serve("tcp", "127.0.0.1:8972")

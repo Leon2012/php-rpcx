@@ -30,8 +30,8 @@ class JsonV1 extends Base  implements Codec
             'method' => $method,
         ];
         if ($args) {
-            //$request['params'] = [$args];
-            $request['params'] = JsonEncoder::encode($args);
+            $request['params'] = [$args];
+            //$request['params'] = JsonEncoder::encode($args);
         }
         $json = json_encode($request);
         if ($this->_debug) {

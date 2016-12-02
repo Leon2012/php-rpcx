@@ -1,22 +1,26 @@
 <?php
 /**
- * Created by IntelliJ IDEA.
- * User: Administrator
- * Date: 2016/11/3
- * Time: 16:54
+ * User: PengYe
+ * Date: 2016/11/21
+ * Time: 11:12
  */
 
 namespace php\rpcx\selector;
 
-class MultiSelector implements Selector
-{
-    private $_clients;
-    private $_servers;
 
-    public function __construct()
+use php\rpcx\Selector;
+use php\rpcx\Client;
+
+class DirectClientSelector extends Base  implements Selector
+{
+
+    private $_client = null;
+
+    public function __construct($trans, $codec)
     {
-        
+        $this->_client = new Client($trans, $codec);
     }
+
 
     public function select($trans, $codec)
     {

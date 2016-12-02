@@ -29,7 +29,11 @@ class JsonV2 extends Base implements Codec
             'id' => $this->_id,
             'method' => $method,
         ];
-        if ($args) {
+        if ($args == null) {
+            $request['params'] = [];
+        }else if (is_object($args)) {
+            $request['params'] = (array)$args;
+        }else{
             $request['params'] = $args;
         }
         $json = json_encode($request);
